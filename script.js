@@ -163,26 +163,24 @@ function generatePuzzle(size, diff) {
 }
 
 function renderBoard() {
-  const table = document.getElementById("board");
-  table.innerHTML = "";
+  const boardElem = document.getElementById("board");
+  boardElem.innerHTML = "";
   document.documentElement.style.setProperty("--size", SIZE);
   for (let r = 0; r < SIZE; r++) {
-    const tr = document.createElement("tr");
     for (let c = 0; c < SIZE; c++) {
-      const td = document.createElement("td");
-      td.classList.add("cell");
-      td.dataset.row = r;
-      td.dataset.col = c;
+      const cell = document.createElement("div");
+      cell.classList.add("cell");
+      cell.dataset.row = r;
+      cell.dataset.col = c;
       const val = board[r][c];
       if (val) {
-        td.textContent = val;
-        td.classList.add("prefill", `state-${val}`);
+        cell.textContent = val;
+        cell.classList.add("prefill", `state-${val}`);
       } else {
-        td.addEventListener("click", handleCellClick);
+        cell.addEventListener("click", handleCellClick);
       }
-      tr.appendChild(td);
+      boardElem.appendChild(cell);
     }
-    table.appendChild(tr);
   }
 }
 
@@ -239,7 +237,7 @@ function updateHints() {
         violation = true;
         for (let c = 0; c < SIZE; c++) {
           document
-            .querySelector(`td[data-row="${rowMap[key]}"][data-col="${c}"]`)
+            .querySelector(`.cell[data-row="${rowMap[key]}"][data-col="${c}"]`)
             .classList.add("error");
         }
       } else {
@@ -249,7 +247,7 @@ function updateHints() {
     if (violation) {
       for (let c = 0; c < SIZE; c++) {
         document
-          .querySelector(`td[data-row="${r}"][data-col="${c}"]`)
+          .querySelector(`.cell[data-row="${r}"][data-col="${c}"]`)
           .classList.add("error");
       }
     }
@@ -286,7 +284,7 @@ function updateHints() {
         violation = true;
         for (let r = 0; r < SIZE; r++) {
           document
-            .querySelector(`td[data-row="${r}"][data-col="${colMap[key]}"]`)
+            .querySelector(`.cell[data-row="${r}"][data-col="${colMap[key]}"]`)
             .classList.add("error");
         }
       } else {
@@ -296,7 +294,7 @@ function updateHints() {
     if (violation) {
       for (let r = 0; r < SIZE; r++) {
         document
-          .querySelector(`td[data-row="${r}"][data-col="${c}"]`)
+          .querySelector(`.cell[data-row="${r}"][data-col="${c}"]`)
           .classList.add("error");
       }
     }
@@ -304,15 +302,15 @@ function updateHints() {
 }
 
 function handleCellClick(e) {
-  const td = e.target;
-  const r = parseInt(td.dataset.row, 10);
-  const c = parseInt(td.dataset.col, 10);
+  const cell = e.target;
+  const r = parseInt(cell.dataset.row, 10);
+  const c = parseInt(cell.dataset.col, 10);
   const idx = (STATES.indexOf(board[r][c] || "") + 1) % STATES.length;
   const val = STATES[idx];
   board[r][c] = val;
-  td.textContent = val;
-  td.className = "cell";
-  if (val) td.classList.add(`state-${val}`);
+  cell.textContent = val;
+  cell.className = "cell";
+  if (val) cell.classList.add(`state-${val}`);
   checkSolution();
   updateHints();
 }
