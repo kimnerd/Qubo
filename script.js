@@ -5,6 +5,7 @@ let SIZE = 6;
 let board = [];
 let solution = [];
 let hintsOn = true;
+let puzzleSolved = false;
 
 function shuffle(arr) {
   for (let i = arr.length - 1; i > 0; i--) {
@@ -200,6 +201,7 @@ function resizeBoard() {
   const size = Math.min(availableWidth, availableHeight);
   container.style.width = `${size}px`;
   container.style.height = `${size}px`;
+  document.documentElement.style.setProperty("--cell-size", `${size / SIZE}px`);
 }
 
 function updateHints() {
@@ -319,10 +321,15 @@ function checkSolution() {
   const msg = document.getElementById("message");
   if (board.flat().includes("")) {
     msg.textContent = "";
+    puzzleSolved = false;
     return;
   }
   if (board.flat().join("") === solution.flat().join("")) {
-    msg.textContent = "Puzzle solved!";
+    msg.textContent = "Congratulations!";
+    if (!puzzleSolved) {
+      puzzleSolved = true;
+      alert("Congratulations!");
+    }
   } else {
     msg.textContent = "";
   }
@@ -334,6 +341,7 @@ function newGame() {
   const { puzzle, solution: sol } = generatePuzzle(SIZE, diff);
   board = puzzle;
   solution = sol;
+  puzzleSolved = false;
   renderBoard();
   resizeBoard();
   updateHints();
