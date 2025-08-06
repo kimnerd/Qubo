@@ -4,6 +4,7 @@ const REAL_STATES = ["0", "1", "ψ"];
 let SIZE = 6;
 let board = [];
 let solution = [];
+let hintsOn = true;
 
 function shuffle(arr) {
   for (let i = arr.length - 1; i > 0; i--) {
@@ -184,6 +185,122 @@ function renderBoard() {
   }
 }
 
+function resizeBoard() {
+  const container = document.getElementById("board-container");
+  const controls = document.getElementById("controls");
+  const message = document.getElementById("message");
+  const rules = document.getElementById("rules");
+  const availableHeight =
+    window.innerHeight -
+    controls.offsetHeight -
+    message.offsetHeight -
+    rules.offsetHeight -
+    40;
+  const availableWidth = window.innerWidth - 20;
+  const size = Math.min(availableWidth, availableHeight);
+  container.style.width = `${size}px`;
+  container.style.height = `${size}px`;
+}
+
+function updateHints() {
+  const cells = document.querySelectorAll(".cell");
+  cells.forEach((c) => c.classList.remove("error"));
+  if (!hintsOn) return;
+
+  const max = SIZE / 3;
+  const rowMap = {};
+  for (let r = 0; r < SIZE; r++) {
+    const counts = { 0: 0, 1: 0, ψ: 0 };
+    let violation = false;
+    for (let c = 0; c < SIZE; c++) {
+      const v = board[r][c];
+      if (v) {
+        counts[v]++;
+        if (counts[v] > max) violation = true;
+      }
+      if (c >= 2) {
+        const a = board[r][c - 2];
+        const b = board[r][c - 1];
+        const d = board[r][c];
+        if (
+          a &&
+          b &&
+          d &&
+          ((a === b && a === d) || (a !== b && b !== d && a !== d))
+        )
+          violation = true;
+      }
+    }
+    if (!board[r].includes("")) {
+      const key = board[r].join("");
+      if (rowMap[key] !== undefined) {
+        violation = true;
+        for (let c = 0; c < SIZE; c++) {
+          document
+            .querySelector(`td[data-row="${rowMap[key]}"][data-col="${c}"]`)
+            .classList.add("error");
+        }
+      } else {
+        rowMap[key] = r;
+      }
+    }
+    if (violation) {
+      for (let c = 0; c < SIZE; c++) {
+        document
+          .querySelector(`td[data-row="${r}"][data-col="${c}"]`)
+          .classList.add("error");
+      }
+    }
+  }
+
+  const colMap = {};
+  for (let c = 0; c < SIZE; c++) {
+    const counts = { 0: 0, 1: 0, ψ: 0 };
+    let violation = false;
+    const colVals = [];
+    for (let r = 0; r < SIZE; r++) {
+      const v = board[r][c];
+      colVals.push(v);
+      if (v) {
+        counts[v]++;
+        if (counts[v] > max) violation = true;
+      }
+      if (r >= 2) {
+        const a = board[r - 2][c];
+        const b = board[r - 1][c];
+        const d = board[r][c];
+        if (
+          a &&
+          b &&
+          d &&
+          ((a === b && a === d) || (a !== b && b !== d && a !== d))
+        )
+          violation = true;
+      }
+    }
+    if (!colVals.includes("")) {
+      const key = colVals.join("");
+      if (colMap[key] !== undefined) {
+        violation = true;
+        for (let r = 0; r < SIZE; r++) {
+          document
+            .querySelector(`td[data-row="${r}"][data-col="${colMap[key]}"]`)
+            .classList.add("error");
+        }
+      } else {
+        colMap[key] = c;
+      }
+    }
+    if (violation) {
+      for (let r = 0; r < SIZE; r++) {
+        document
+          .querySelector(`td[data-row="${r}"][data-col="${c}"]`)
+          .classList.add("error");
+      }
+    }
+  }
+}
+
 function handleCellClick(e) {
   const td = e.target;
   const r = parseInt(td.dataset.row, 10);
@@ -195,6 +312,7 @@ function handleCellClick(e) {
   td.className = "cell";
   if (val) td.classList.add(`state-${val}`);
   checkSolution();
+  updateHints();
 }
 
 function checkSolution() {
@@ -217,10 +335,19 @@ function newGame() {
   board = puzzle;
   solution = sol;
   renderBoard();
+  resizeBoard();
+  updateHints();
   document.getElementById("message").textContent = "";
 }
 
 document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("new-game").addEventListener("click", newGame);
+  const hintToggle = document.getElementById("hint-toggle");
+  hintsOn = hintToggle.checked;
+  hintToggle.addEventListener("change", (e) => {
+    hintsOn = e.target.checked;
+    updateHints();
+  });
+  window.addEventListener("resize", resizeBoard);
   newGame();
 });

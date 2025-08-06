@@ -12,6 +12,8 @@ body {
   display: inline-block;
   width: min(90vmin, 600px);
   height: min(90vmin, 600px);
+  max-width: 100%;
+  max-height: calc(100vh - 200px);
 }
 
 #board {
@@ -38,6 +40,10 @@ body {
 .cell.prefill {
   background: #eee;
   cursor: default;
+}
+
+.cell.error {
+  background: #fdd;
 }
 
 .state-0 {
@@ -80,4 +86,10 @@ body {
 #message {
   margin-top: 1rem;
   font-weight: bold;
+}
+
+#rules {
+  margin-top: 1rem;
+  display: inline-block;
+  text-align: left;
 }

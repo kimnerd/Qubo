@@ -24,6 +24,10 @@
           <option value="hard">Hard</option>
         </select>
       </label>
+      <label>
+        Hints
+        <input type="checkbox" id="hint-toggle" checked />
+      </label>
       <button id="new-game">New Game</button>
     </div>
     <div id="board-container">
@@ -31,6 +35,14 @@
       <svg id="links"></svg>
     </div>
     <div id="message"></div>
+    <div id="rules">
+      <h2>Rules</h2>
+      <ul>
+        <li>Each row and column contains the same number of 0, 1 and ψ.</li>
+        <li>No three consecutive cells may be all the same or all different.</li>
+        <li>Rows and columns must be unique.</li>
+      </ul>
+    </div>
     <script src="script.js"></script>
   </body>
 </html>
