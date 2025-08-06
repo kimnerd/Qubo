@@ -9,4 +9,4 @@ Qubo is a quantum-inspired logic puzzle. Choose a board size (6×6 or 12×12) an
 
 Use the controls to pick the board size and difficulty (easy/medium/hard) and click **New Game** for a fresh, randomly generated puzzle. The generator backtracks to ensure every puzzle has a unique solution. The layout automatically scales to fit the browser window.
 
-Open `index.html` in a browser or enable GitHub Pages to play at `https://<username>.github.io/Qubo/`.
+Open `index.html` in a browser or enable GitHub Pages to play at `https://kimner.github.io/Qubo/`.
