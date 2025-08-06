@@ -1,0 +1,83 @@
+body {
+  font-family: sans-serif;
+  text-align: center;
+}
+
+#controls {
+  margin-bottom: 1rem;
+}
+
+#board-container {
+  position: relative;
+  display: inline-block;
+  width: min(90vmin, 600px);
+  height: min(90vmin, 600px);
+}
+
+#board {
+  border-collapse: collapse;
+  margin: 0 auto;
+  width: 100%;
+  height: 100%;
+}
+
+:root {
+  --size: 6;
+}
+
+.cell {
+  width: calc(100% / var(--size));
+  height: calc(100% / var(--size));
+  border: 1px solid #ccc;
+  font-size: calc(60vmin / var(--size));
+  cursor: pointer;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.cell.prefill {
+  background: #eee;
+  cursor: default;
+}
+
+.state-0 {
+  color: blue;
+}
+
+.state-1 {
+  color: red;
+}
+
+.state-ψ {
+  color: purple;
+}
+
+#links {
+  position: absolute;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+}
+
+.entangled {
+  stroke: #888;
+  stroke-width: 2;
+  animation: glow 1s linear infinite;
+}
+
+@keyframes glow {
+  0% {
+    stroke: #888;
+  }
+  50% {
+    stroke: #fff;
+  }
+  100% {
+    stroke: #888;
+  }
+}
+
+#message {
+  margin-top: 1rem;
+  font-weight: bold;
+}
