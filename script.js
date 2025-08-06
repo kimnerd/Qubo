@@ -324,7 +324,7 @@ function checkSolution() {
   if (board.flat().join("") === solution.flat().join("")) {
     msg.textContent = "Puzzle solved!";
   } else {
-    msg.textContent = "Rules violated!";
+    msg.textContent = "";
   }
 }
 

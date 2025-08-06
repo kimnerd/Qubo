@@ -14,6 +14,7 @@ body {
   height: min(90vmin, 600px);
   max-width: 100%;
   max-height: calc(100vh - 200px);
+  margin-bottom: 1rem;
 }
 
 #board {
@@ -21,6 +22,11 @@ body {
   margin: 0 auto;
   width: 100%;
   height: 100%;
+  table-layout: fixed;
+}
+
+#board tr {
+  height: calc(100% / var(--size));
 }
 
 :root {
@@ -29,12 +35,13 @@ body {
 
 .cell {
   width: calc(100% / var(--size));
-  height: calc(100% / var(--size));
+  height: 100%;
   border: 1px solid #ccc;
-  font-size: calc(60vmin / var(--size));
+  font-size: calc(40vmin / var(--size));
   cursor: pointer;
   text-align: center;
   vertical-align: middle;
+  line-height: 1;
 }
 
 .cell.prefill {
@@ -90,6 +97,6 @@ body {
 
 #rules {
   margin-top: 1rem;
-  display: inline-block;
+  display: block;
   text-align: left;
 }
